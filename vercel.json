@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/version", "destination": "/api/version" },
+    { "source": "/version/", "destination": "/api/version" }
+  ],
+  "headers": [
+    {
+      "source": "/version",
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    },
+    {
+      "source": "/version/",
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    }
+  ]
+}
