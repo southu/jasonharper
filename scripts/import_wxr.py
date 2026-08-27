@@ -236,6 +236,30 @@ def write_page(rel_path: str, content: str) -> Path:
     return dest
 
 
+def write_feed(xml: str) -> None:
+    dest_dir = REPO / "feed"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    (dest_dir / "rss.xml").write_text(xml, encoding="utf-8")
+    (dest_dir / "index.html").write_text(xml, encoding="utf-8")
+
+
+def assert_locked_paths_on_disk() -> None:
+    if not LOCK_PATH.exists():
+        print("url-lock.json missing; skip on-disk lock check", file=sys.stderr)
+        return
+    lock = json.loads(LOCK_PATH.read_text(encoding="utf-8"))
+    missing: list[str] = []
+    for url in lock.get("categories", []) + lock.get("tags", []):
+        rel = url.replace("https://jasonharper.com/", "").strip("/")
+        if not (REPO / rel / "index.html").exists():
+            missing.append(rel)
+    feed_ok = (REPO / "feed" / "rss.xml").exists() or (REPO / "feed" / "index.html").exists()
+    if not feed_ok:
+        missing.append("feed")
+    if missing:
+        raise SystemExit("locked paths missing on disk: " + ", ".join(missing))
+
+
 def load_wxr(path: Path) -> dict:
     site_title = None
     site_desc = None
@@ -565,7 +589,8 @@ def main() -> int:
         )
 
     write_page("/", render_home(data))
-    write_page("/feed/", render_feed(data["posts"]))
+    write_feed(render_feed(data["posts"]))
+    assert_locked_paths_on_disk()
     (REPO / "404.html").write_text(
         html_page(
             "Not found",

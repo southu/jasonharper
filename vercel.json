@@ -36,10 +36,18 @@
     },
     {
       "src": "^/feed/?$",
-      "dest": "/feed/index.html",
+      "dest": "/feed/rss.xml",
       "headers": {
         "Content-Type": "application/rss+xml; charset=UTF-8"
       }
+    },
+    {
+      "src": "^/category/([^/]+)/?$",
+      "dest": "/category/$1/index.html"
+    },
+    {
+      "src": "^/tag/([^/]+)/?$",
+      "dest": "/tag/$1/index.html"
     },
     {
       "src": "^/wp-admin(/.*)?$",
