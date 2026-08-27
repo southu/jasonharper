@@ -7,7 +7,6 @@ Filenames and YYYY/MM paths are preserved exactly — no rename, hash, or restam
 
 from __future__ import annotations
 
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -20,11 +19,6 @@ ZIP_CANDIDATES = [
 DEST_PARENT = REPO / "wp-content"
 DEST = DEST_PARENT / "uploads"
 
-# Plugin internals and server config from the HostGator dump — not public media.
-SKIP_DIRS = {"sucuri"}
-SKIP_NAMES = {".htaccess"}
-SKIP_SUFFIXES = {".php"}
-
 
 def zip_path() -> Path:
     for candidate in ZIP_CANDIDATES:
@@ -33,18 +27,6 @@ def zip_path() -> Path:
     raise SystemExit(
         "missing uploads.zip (expected at /opt/projects/jasonharper/export/uploads.zip)"
     )
-
-
-def clean_non_media(root: Path) -> None:
-    for name in SKIP_DIRS:
-        path = root / name
-        if path.is_dir():
-            shutil.rmtree(path)
-    for path in root.rglob("*"):
-        if not path.is_file():
-            continue
-        if path.name in SKIP_NAMES or path.suffix.lower() in SKIP_SUFFIXES:
-            path.unlink()
 
 
 def main() -> None:
@@ -60,7 +42,6 @@ def main() -> None:
         raise SystemExit(f"unzip failed with code {result.returncode}")
     if not DEST.is_dir():
         raise SystemExit(f"unpack produced no {DEST.relative_to(REPO)} directory")
-    clean_non_media(DEST)
     files = [p for p in DEST.rglob("*") if p.is_file()]
     print(f"unpacked {len(files)} files from {src} into {DEST.relative_to(REPO)}/", file=sys.stderr)
 

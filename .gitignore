@@ -16,9 +16,6 @@ build/
 export/
 uploads.zip
 *.wordpress.xml
-# HostGator plugin internals from uploads.zip — not public media
-wp-content/uploads/sucuri/
-wp-content/uploads/.htaccess
 runs/
 babysit-*.json
 missions/*.yaml
