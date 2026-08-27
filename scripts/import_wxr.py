@@ -208,6 +208,7 @@ def html_page(
     <footer class="site-footer">
       <div class="wrap">
         <nav>
+          <a href="/">Back to Home</a>
           <a href="/about-me/">About Me</a>
           <a href="/belly-shots/">Belly Shots</a>
           <a href="/beginner-crossfit-wods/">Beginner CrossFit WODs</a>
@@ -215,7 +216,6 @@ def html_page(
           <a href="/crossfit-shoes/">CrossFit Shoes</a>
           <a href="/my-results/">My Stats</a>
         </nav>
-        <p>Jason Harper. Not WordPress. Preview origin for jasonharper.com; HostGator stays live until cutover.</p>
       </div>
     </footer>
   </body>
