@@ -196,10 +196,8 @@ def html_page(
         <p class="site-tagline">{esc(tagline)}</p>
         <nav class="site-nav">
           <a href="/"{nav_home_current}>Home</a>
-          <a href="/about-me/">About Me</a>
-          <a href="/what-is-crossfit/">What Is CrossFit?</a>
-          <a href="/category/crossfit/">CrossFit</a>
-          <a href="/tag/paleo/">Paleo</a>
+          <a href="/about-me/">About</a>
+          <a href="/my-fitness-journey/">My Fitness Journey</a>
         </nav>
       </div>
     </header>
@@ -472,7 +470,7 @@ def render_home(_data: dict | None = None) -> str:
         </li>
       </ol>
       <section class="archive-note">
-        <h2>CrossFit training log</h2>
+        <h2><a href="/my-fitness-journey/">My Fitness Journey</a></h2>
         <p>Every existing post, page, category, tag, and image path is unchanged. The archive still starts at <a href="/category/crossfit/">CrossFit</a>, with <a href="/about-me/">About Me</a>, <a href="/what-is-crossfit/">What Is CrossFit?</a>, and the <a href="/feed/">feed</a> where they have always been.</p>
       </section>"""
     return html_page(
