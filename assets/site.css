@@ -1,13 +1,9 @@
 :root {
   --ink: #1c1917;
   --muted: #57534e;
-  --paper: #f7f3ec;
+  --paper: #fdf6e3;
   --card: #fffcf7;
   --line: #e7e0d4;
-  --header: #2c1810;
-  --accent: #b45309;
-  --link: #9a3412;
-  --link-hover: #7c2d12;
 }
 
 * {
@@ -20,21 +16,31 @@ html {
 
 body {
   margin: 0;
+  background-color: #fdf6e3;
   background: var(--paper);
   color: var(--ink);
-  font-family: Georgia, "Palatino Linotype", Palatino, "Times New Roman", serif;
+  font-family: Charter, Georgia, serif;
   font-size: 1.125rem;
   line-height: 1.7;
 }
 
+.entry-content,
+.entry,
+.post-list,
+.excerpt {
+  font-family: Charter, Georgia, serif;
+}
+
 a {
-  color: var(--link);
+  color: var(--ink);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.15em;
 }
 
-a:hover {
-  color: var(--link-hover);
+a:hover,
+.site-nav a:hover,
+nav a:hover {
+  color: #c8860a;
 }
 
 .wrap {
@@ -42,19 +48,25 @@ a:hover {
   margin: 0 auto;
 }
 
-.site-header {
-  background: var(--header);
-  color: #f5e6d3;
+.site-header,
+#masthead {
+  background-color: #fdf6e3;
+  background: var(--paper);
+  color: var(--ink);
   padding: 1.75rem 0 1.25rem;
+  box-shadow: none;
+  border: none;
 }
 
-.site-header a {
-  color: #f5e6d3;
+.site-header a,
+#masthead a {
+  color: var(--ink);
   text-decoration: none;
 }
 
-.site-header a:hover {
-  color: #fff;
+.site-header a:hover,
+#masthead a:hover {
+  color: #c8860a;
 }
 
 .site-title {
@@ -62,13 +74,20 @@ a:hover {
   font-size: 1.85rem;
   font-weight: 700;
   letter-spacing: 0.01em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .site-tagline {
   margin: 0.25rem 0 0;
-  color: #d6c4b0;
+  color: var(--muted);
   font-size: 0.95rem;
   font-style: italic;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.site-nav,
+nav {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .site-nav {
@@ -76,7 +95,6 @@ a:hover {
   flex-wrap: wrap;
   gap: 0.75rem 1.25rem;
   margin-top: 1rem;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 0.85rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -86,23 +104,41 @@ a:hover {
   border-bottom: 1px solid transparent;
 }
 
-.site-nav a:hover,
+.site-nav a:hover {
+  border-bottom-color: #c8860a;
+}
+
 .site-nav a[aria-current="page"] {
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--ink);
 }
 
 main {
   padding: 2rem 0 3rem;
 }
 
+.page-kicker,
+.project-kicker,
+.kicker,
+.tag-label {
+  color: #c8860a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 .page-kicker {
   margin: 0 0 0.35rem;
-  color: var(--accent);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 h1 {
@@ -113,7 +149,7 @@ h1 {
 
 .meta {
   color: var(--muted);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 0.9rem;
 }
 
@@ -196,7 +232,7 @@ h1 {
   margin-top: 2rem;
   padding-top: 1rem;
   border-top: 1px solid var(--line);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 0.9rem;
 }
 
@@ -222,8 +258,6 @@ h1 {
 
 .project-kicker {
   margin: 0 0 0.2rem;
-  color: var(--accent);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -261,7 +295,7 @@ h1 {
 
 .archive-note p.lock-proof {
   margin-top: 0.85rem;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 0.9rem;
   word-break: break-word;
 }
@@ -270,7 +304,7 @@ h1 {
   border-top: 1px solid var(--line);
   padding: 1.5rem 0 2.5rem;
   color: var(--muted);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 0.85rem;
 }
 
