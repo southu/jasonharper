@@ -119,7 +119,6 @@ main {
 }
 
 .page-kicker,
-.project-kicker,
 .kicker,
 .tag-label {
   color: var(--accent);
@@ -260,14 +259,6 @@ h1 {
 
 .project + .project {
   padding-top: 0.35rem;
-}
-
-.project-kicker {
-  margin: 0 0 0.25rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .project h2 {
