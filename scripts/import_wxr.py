@@ -171,7 +171,13 @@ def permalink_path(link: str) -> str:
     return link
 
 
-def html_page(title: str, body: str, kicker: str = "") -> str:
+def html_page(
+    title: str,
+    body: str,
+    kicker: str = "",
+    tagline: str = "Documenting My Attempt at CrossFit",
+    extra_head: str = "",
+) -> str:
     safe_title = esc(title)
     nav_home_current = ' aria-current="page"' if title == "Jason Harper" else ""
     return f"""<!DOCTYPE html>
@@ -181,12 +187,13 @@ def html_page(title: str, body: str, kicker: str = "") -> str:
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{safe_title} — Jason Harper</title>
     <link rel="stylesheet" href="/assets/site.css" />
+    {extra_head}
   </head>
   <body>
     <header class="site-header">
       <div class="wrap">
         <p class="site-title"><a href="/">Jason Harper</a></p>
-        <p class="site-tagline">Documenting My Attempt at CrossFit</p>
+        <p class="site-tagline">{esc(tagline)}</p>
         <nav class="site-nav">
           <a href="/"{nav_home_current}>Home</a>
           <a href="/about-me/">About Me</a>
@@ -395,32 +402,91 @@ def render_archive(title: str, kicker: str, items: list[dict]) -> str:
     return html_page(title, inner, kicker=kicker)
 
 
-def render_home(data: dict) -> str:
-    lis = []
-    for post in data["posts"]:
-        excerpt = excerpt_plain(post.get("excerpt") or post.get("body") or "")
-        excerpt_html = f'<p class="excerpt">{esc(excerpt)}</p>' if excerpt else ""
-        lis.append(
-            f"""<li>
-            <a href="{esc_attr(post["path"])}">{esc(post["title"])}</a>
-            <span class="meta">{esc(format_date(post["date"]))}</span>
-            {excerpt_html}
-          </li>"""
-        )
-    cat_links = " · ".join(
-        f'<a href="/category/{esc_attr(slug)}/">{esc(name)}</a>'
-        for slug, name in sorted(data["categories"].items(), key=lambda kv: kv[1].lower())
-    )
-    inner = f"""<section class="home-intro">
+def rfc822(raw: str) -> str:
+    raw = (raw or "").strip()
+    if not raw:
+        return ""
+    for fmt, width in (("%Y-%m-%d %H:%M:%S", 19), ("%Y-%m-%d", 10)):
+        try:
+            dt = datetime.strptime(raw[:width], fmt)
+            return dt.strftime("%a, %d %b %Y %H:%M:%S +0000")
+        except ValueError:
+            continue
+    return raw
+
+
+def render_home(_data: dict | None = None) -> str:
+    inner = """<section class="home-intro">
+        <p class="page-kicker">Project showcase</p>
         <h1>Jason Harper</h1>
-        <p>Documenting My Attempt at CrossFit. Training log, guest posts, and notes from the gym — imported from the WordPress export onto this preview origin.</p>
-        <p class="meta">Categories: {cat_links}</p>
+        <p>Economist, founder, and applied-AI operator. This preview home is a project showcase — not a CrossFit blog index. The training log, pages, categories, tags, and feed stay at their original URLs.</p>
       </section>
-      <h2>Posts</h2>
-      <ul class="post-list">
-        {"".join(lis)}
-      </ul>"""
-    return html_page("Jason Harper", inner)
+      <ol class="project-list">
+        <li class="project">
+          <p class="project-kicker">01</p>
+          <h2>VYGO</h2>
+          <p class="meta">Production engineering for AI-built software</p>
+          <p>VYGO takes a working prototype — the UX, workflows, and product learning already proven — and rebuilds the layer underneath so it can survive real users, security reviews, and operations. Audit, architect, harden, hand off the code.</p>
+        </li>
+        <li class="project">
+          <p class="project-kicker">02</p>
+          <h2>Ready Signal</h2>
+          <p class="meta">Founder and President · <a href="https://www.readysignal.com/">readysignal.com</a></p>
+          <p>Ready Signal is an external-data platform for forecasting and decision-making. It normalizes hundreds of economic, market, weather, and other signals so models are not stuck on internal, backward-looking history alone.</p>
+        </li>
+        <li class="project">
+          <p class="project-kicker">03</p>
+          <h2>RXA at OneMagnify</h2>
+          <p class="meta">Founder · Managing Director · <a href="https://www.rxa.io/">rxa.io</a></p>
+          <p>RXA is the data science firm founded in Ann Arbor in 2016 and acquired by OneMagnify in 2023. RXA at OneMagnify delivers data engineering, machine learning, and applied AI for clients who need to make faster, better decisions.</p>
+        </li>
+        <li class="project">
+          <p class="project-kicker">04</p>
+          <h2>Design Parenting</h2>
+          <p class="meta">Family systems, by design</p>
+          <p>Design Parenting applies the same product and systems thinking used at work to how a family actually runs — routines, attention, and the environment kids grow up in — instead of treating parenting as an unexamined default.</p>
+        </li>
+      </ol>
+      <section class="archive-note">
+        <h2>CrossFit training log</h2>
+        <p>Every existing post, page, category, tag, and image path is unchanged. The archive still starts at <a href="/category/crossfit/">CrossFit</a>, with <a href="/about-me/">About Me</a>, <a href="/what-is-crossfit/">What Is CrossFit?</a>, and the <a href="/feed/">feed</a> where they have always been.</p>
+      </section>"""
+    return html_page(
+        "Jason Harper",
+        inner,
+        tagline="Projects, products, and applied AI",
+        extra_head='<link rel="alternate" type="application/rss+xml" title="Jason Harper feed" href="/feed/" />',
+    )
+
+
+def render_feed(posts: list[dict]) -> str:
+    items = []
+    for post in posts:
+        path = post["path"]
+        link = f"https://jasonharper.vercel.app{path}"
+        desc = excerpt_plain(post.get("excerpt") or post.get("body") or "")
+        pub = rfc822(post.get("date") or "")
+        pub_xml = f"\n      <pubDate>{esc(pub)}</pubDate>" if pub else ""
+        items.append(
+            f"""    <item>
+      <title>{esc(post["title"])}</title>
+      <link>{esc(link)}</link>
+      <guid>{esc(link)}</guid>{pub_xml}
+      <description>{esc(desc)}</description>
+    </item>"""
+        )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0">\n'
+        "  <channel>\n"
+        "    <title>Jason Harper</title>\n"
+        "    <link>https://jasonharper.vercel.app/</link>\n"
+        "    <description>Posts from the jasonharper.com training log, served on the preview origin.</description>\n"
+        "    <language>en-us</language>\n"
+        + "\n".join(items)
+        + "\n  </channel>\n"
+        "</rss>\n"
+    )
 
 
 def check_lock(data: dict) -> None:
@@ -499,6 +565,7 @@ def main() -> int:
         )
 
     write_page("/", render_home(data))
+    write_page("/feed/", render_feed(data["posts"]))
     (REPO / "404.html").write_text(
         html_page(
             "Not found",

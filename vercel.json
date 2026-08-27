@@ -35,6 +35,13 @@
       }
     },
     {
+      "src": "^/feed/?$",
+      "dest": "/feed/index.html",
+      "headers": {
+        "Content-Type": "application/rss+xml; charset=UTF-8"
+      }
+    },
+    {
       "src": "^/wp-admin(/.*)?$",
       "status": 404,
       "dest": "/404.html"

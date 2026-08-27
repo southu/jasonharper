@@ -208,6 +208,57 @@ h1 {
   margin: 0 0 0.8rem;
 }
 
+.project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  counter-reset: none;
+}
+
+.project {
+  border-top: 1px solid var(--line);
+  padding: 1.35rem 0 1.55rem;
+}
+
+.project-kicker {
+  margin: 0 0 0.2rem;
+  color: var(--accent);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.project h2 {
+  margin: 0 0 0.3rem;
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  line-height: 1.2;
+}
+
+.project .meta {
+  margin: 0 0 0.65rem;
+}
+
+.project p:last-child {
+  margin: 0;
+}
+
+.archive-note {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.archive-note h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.archive-note p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 1.5rem 0 2.5rem;
