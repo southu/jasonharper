@@ -12,4 +12,7 @@ Re-import (export must already be on disk, outside the repo):
 
 ```
 python3 scripts/import_wxr.py
+python3 scripts/unpack_uploads.py
 ```
+
+Media files are served at their original public paths (`/wp-content/uploads/YYYY/MM/filename`). Names and paths are not rewritten.
