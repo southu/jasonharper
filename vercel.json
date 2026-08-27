@@ -3,6 +3,10 @@
     { "source": "/version", "destination": "/api/version" },
     { "source": "/version/", "destination": "/api/version" }
   ],
+  "routes": [
+    { "src": "^/wp-admin(/.*)?$", "status": 404 },
+    { "src": "^/wp-login\\.php(/.*)?$", "status": 404 }
+  ],
   "headers": [
     {
       "source": "/version",
