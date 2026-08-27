@@ -1,20 +1,22 @@
 {
-  "rewrites": [
-    { "source": "/version", "destination": "/api/version" },
-    { "source": "/version/", "destination": "/api/version" }
-  ],
   "routes": [
-    { "src": "^/wp-admin(/.*)?$", "status": 404 },
-    { "src": "^/wp-login\\.php(/.*)?$", "status": 404 }
-  ],
-  "headers": [
     {
-      "source": "/version",
-      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+      "src": "^/version/?$",
+      "dest": "/api/version",
+      "headers": {
+        "Cache-Control": "no-store"
+      }
     },
     {
-      "source": "/version/",
-      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
-    }
+      "src": "^/wp-admin(/.*)?$",
+      "status": 404,
+      "dest": "/404.html"
+    },
+    {
+      "src": "^/wp-login\\.php(/.*)?$",
+      "status": 404,
+      "dest": "/404.html"
+    },
+    { "handle": "filesystem" }
   ]
 }
