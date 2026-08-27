@@ -1,0 +1,118 @@
+[
+  {
+    "slug": "blocks",
+    "href": "https://jasonharper.com/wp-json/wp/v2/blocks",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "categories",
+    "href": "https://jasonharper.com/wp-json/wp/v2/categories",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "comments",
+    "href": "https://jasonharper.com/wp-json/wp/v2/comments",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "jp_pay_order",
+    "href": "https://jasonharper.com/wp-json/wp/v2/jp_pay_order",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "jp_pay_product",
+    "href": "https://jasonharper.com/wp-json/wp/v2/jp_pay_product",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "media",
+    "href": "https://jasonharper.com/wp-json/wp/v2/media",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "navigation",
+    "href": "https://jasonharper.com/wp-json/wp/v2/navigation",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "pages",
+    "href": "https://jasonharper.com/wp-json/wp/v2/pages",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "posts",
+    "href": "https://jasonharper.com/wp-json/wp/v2/posts",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "search",
+    "href": "https://jasonharper.com/wp-json/wp/v2/search",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "slug": "statuses",
+    "href": "https://jasonharper.com/wp-json/wp/v2/statuses",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "slug": "tags",
+    "href": "https://jasonharper.com/wp-json/wp/v2/tags",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "slug": "taxonomies",
+    "href": "https://jasonharper.com/wp-json/wp/v2/taxonomies",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "slug": "types",
+    "href": "https://jasonharper.com/wp-json/wp/v2/types",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "slug": "wp_pattern_category",
+    "href": "https://jasonharper.com/wp-json/wp/v2/wp_pattern_category",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  }
+]
