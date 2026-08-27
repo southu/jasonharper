@@ -171,15 +171,32 @@ def permalink_path(link: str) -> str:
     return link
 
 
+LINKEDIN_URL = "https://www.linkedin.com/in/maximizeroi"
+
+PROFESSIONAL_FOOTER = f"""        <p>© Jason Harper · <a href="/about/">About</a> · <a href="{LINKEDIN_URL}">LinkedIn</a></p>"""
+
+FITNESS_FOOTER = """        <nav>
+          <a href="/">Back to Home</a>
+          <a href="/about-me/">About Me</a>
+          <a href="/belly-shots/">Belly Shots</a>
+          <a href="/beginner-crossfit-wods/">Beginner CrossFit WODs</a>
+          <a href="/crossfit-results/">CrossFit Results</a>
+          <a href="/crossfit-shoes/">CrossFit Shoes</a>
+          <a href="/my-results/">My Stats</a>
+        </nav>"""
+
+
 def html_page(
     title: str,
     body: str,
     kicker: str = "",
     tagline: str = "Documenting My Attempt at CrossFit",
     extra_head: str = "",
+    footer: str = "fitness",
 ) -> str:
     safe_title = esc(title)
     nav_home_current = ' aria-current="page"' if title == "Jason Harper" else ""
+    footer_inner = PROFESSIONAL_FOOTER if footer == "professional" else FITNESS_FOOTER
     return f"""<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -207,15 +224,7 @@ def html_page(
     </main>
     <footer class="site-footer">
       <div class="wrap">
-        <nav>
-          <a href="/">Back to Home</a>
-          <a href="/about-me/">About Me</a>
-          <a href="/belly-shots/">Belly Shots</a>
-          <a href="/beginner-crossfit-wods/">Beginner CrossFit WODs</a>
-          <a href="/crossfit-results/">CrossFit Results</a>
-          <a href="/crossfit-shoes/">CrossFit Shoes</a>
-          <a href="/my-results/">My Stats</a>
-        </nav>
+{footer_inner}
       </div>
     </footer>
   </body>
@@ -478,6 +487,7 @@ def render_home(_data: dict | None = None) -> str:
         inner,
         tagline="Projects, products, and applied AI",
         extra_head='<link rel="alternate" type="application/rss+xml" title="Jason Harper feed" href="/feed/" />',
+        footer="professional",
     )
 
 
