@@ -1,6 +1,33 @@
 {
   "routes": [
     {
+      "src": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.jasonharper.vercel.app"
+        }
+      ],
+      "status": 301,
+      "headers": {
+        "Location": "https://jasonharper.vercel.app/$1"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "has": [
+        {
+          "type": "header",
+          "key": "x-forwarded-proto",
+          "value": "http"
+        }
+      ],
+      "status": 301,
+      "headers": {
+        "Location": "https://jasonharper.vercel.app/$1"
+      }
+    },
+    {
       "src": "^/version/?$",
       "dest": "/api/version",
       "headers": {
