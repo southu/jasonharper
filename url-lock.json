@@ -1,7 +1,7 @@
 {
-  "crawled_at": "2026-08-27T01:30:00Z",
+  "crawled_at": "2026-08-27T04:43:09Z",
   "source": "https://jasonharper.com",
-  "method": "WordPress REST API (/wp-json/wp/v2/{posts,pages,categories,tags}) plus live HTTP GET verification of every recorded URL; homepage HTML crawl for additional public links; robots.txt for sitemap declaration. Recrawled 2026-08-27 iteration 2 after making github.com/southu/jasonharper public on default branch main.",
+  "method": "WordPress REST API (/wp-json/wp/v2/{posts,pages,categories,tags}) plus live HTTP GET verification of every recorded URL; homepage HTML crawl for additional public links; robots.txt for sitemap declaration. Recrawled 2026-08-27T04:43:09Z (iteration 8). Public Sucuri edge still 301-loops /wp-sitemap.xml onto itself and still emits www→apex Location http://jasonharper.com/. Origin HTTPS (HostGator, bypassing Sucuri) still returns sitemap 200 application/xml with a sitemapindex and www Location https://jasonharper.com/. Hosting credentials to change WordPress is_ssl() behind Sucuri or to make Sucuri forward HTTPS to origin were not available; lock files record observed public values.",
   "posts": [
     "https://jasonharper.com/1-year-of-crossfit-at-hyperfit-usa/",
     "https://jasonharper.com/100-days-of-crossfit/",
@@ -141,7 +141,7 @@
       "location": "http://jasonharper.com/",
       "target": "http://jasonharper.com/",
       "x_redirect_by": "WordPress",
-      "notes": "Observed on the public Sucuri edge (cache HIT and cache-buster MISS): GET https://www.jasonharper.com returns HTTP 301 with Location http://jasonharper.com/ (scheme http, not https). Follow-up GET of http://jasonharper.com/ then 301s to https://jasonharper.com/. Origin HTTPS (HostGator, bypassing Sucuri) already returns Location https://jasonharper.com/. Documented as observed on the public hostname, not rewritten."
+      "notes": "Recrawled 2026-08-27T04:43:09Z on the public Sucuri edge (cache HIT): GET https://www.jasonharper.com and GET https://www.jasonharper.com/ return HTTP 301 with Location http://jasonharper.com/ (scheme http, not https, X-Redirect-By: WordPress). Follow-up GET of http://jasonharper.com/ then 301s to https://jasonharper.com/. Origin HTTPS (HostGator, bypassing Sucuri) already returns Location https://jasonharper.com/. Documented as observed on the public hostname, not rewritten."
     },
     "www": {
       "from": "https://www.jasonharper.com",
@@ -211,7 +211,7 @@
       "from": "https://jasonharper.com/wp-sitemap.xml",
       "status": 301,
       "location": "https://jasonharper.com/wp-sitemap.xml",
-      "notes": "On the public Sucuri edge, GET https://jasonharper.com/wp-sitemap.xml returns HTTP 301 Location https://jasonharper.com/wp-sitemap.xml (self-redirect loop; empty body; cache HIT and cache-buster MISS). robots.txt still declares Sitemap: https://jasonharper.com/wp-sitemap.xml. Origin HTTPS (HostGator, bypassing Sucuri) returns HTTP 200 application/xml with a <sitemapindex> body. Child sitemaps loop the same way on the public hostname. Recorded sitemap field is the declared public URL."
+      "notes": "Recrawled 2026-08-27T04:43:09Z. On the public Sucuri edge, GET https://jasonharper.com/wp-sitemap.xml returns HTTP 301 Location https://jasonharper.com/wp-sitemap.xml (self-redirect loop; empty body; x-sucuri-cache HIT; X-Redirect-By: WordPress). curl -L --max-redirs 5 never yields XML. robots.txt still declares Sitemap: https://jasonharper.com/wp-sitemap.xml. Origin HTTPS (HostGator, bypassing Sucuri) returns HTTP 200 application/xml with a <sitemapindex> body. Child sitemaps (e.g. wp-sitemap-posts-post-1.xml) loop the same way on the public hostname and return 200 XML on origin HTTPS. Recorded sitemap field is the declared public URL."
     }
   },
   "counts": {

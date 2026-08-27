@@ -1,6 +1,6 @@
 # jasonharper.com URL lock
 
-Regression baseline of every public-facing URL on the live WordPress site at https://jasonharper.com, crawled 2026-08-27 (recrawled 2026-08-27T01:30:00Z).
+Regression baseline of every public-facing URL on the live WordPress site at https://jasonharper.com, crawled 2026-08-27 (recrawled 2026-08-27T04:43:09Z, iteration 8).
 
 Sources: WordPress REST API (`/wp-json/wp/v2/posts|pages|categories|tags`), live HTTP GET of every collected URL (no redirect following), homepage HTML, and `robots.txt`. Permalink structure on the live site is `/{slug}/` (not `/YYYY/MM/DD/{slug}/`). Date-style samples such as `/2018/04/17/its-still-hard/` return HTTP 404 and are not in this lock.
 
@@ -31,18 +31,19 @@ Machine-readable inventory: `url-lock.json`.
 ## Sitemap
 
 - Declared URL: `https://jasonharper.com/wp-sitemap.xml` (from `robots.txt`: `Sitemap: https://jasonharper.com/wp-sitemap.xml`)
-- Public hostname (Sucuri CloudProxy): HTTP 301, `X-Redirect-By: WordPress`, Location `https://jasonharper.com/wp-sitemap.xml` (same URL) — a redirect loop. Confirmed on cache HIT and on cache-buster MISS. Body empty; following redirects never yields XML.
+- Public hostname (Sucuri CloudProxy), recrawled 2026-08-27T04:43:09Z: HTTP 301, `X-Redirect-By: WordPress`, Location `https://jasonharper.com/wp-sitemap.xml` (same URL) — a redirect loop. Confirmed on cache HIT (and previously on cache-buster MISS). Body empty; `curl -L --max-redirs 5` never yields XML.
 - Origin HTTPS (HostGator, bypassing Sucuri): HTTP 200, `Content-Type: application/xml`, body is a WordPress `<sitemapindex>` with post/page/category/tag/user children.
-- Child sitemaps (`wp-sitemap-posts-post-1.xml`, `wp-sitemap-posts-page-1.xml`, `wp-sitemap-taxonomies-category-1.xml`, `wp-sitemap-taxonomies-post_tag-1.xml`) loop the same way on the public hostname and return 200 XML on origin HTTPS.
-- Recorded in `url-lock.json` as the declared public sitemap URL. The XML body is not retrievable from the public hostname without following the loop. Hosting credentials to force WordPress `is_ssl()` behind Sucuri (so the public URL returns 200) were not available this iteration.
+- Child sitemaps (`wp-sitemap-posts-post-1.xml` and siblings) loop the same way on the public hostname and return 200 XML on origin HTTPS.
+- Cause: Sucuri TLS-terminates and forwards HTTP to origin, so WordPress `is_ssl()` is false and the sitemap controller 301s the already-HTTPS public URL onto itself. Origin HTTP sitemap also 301s to `https://jasonharper.com/wp-sitemap.xml`. The Sucuri Security plugin reverse-proxy mode is disabled, so `X-Forwarded-Proto` is not applied.
+- Recorded in `url-lock.json` as the declared public sitemap URL. Hosting credentials to enable HTTPS detection behind Sucuri, forward HTTPS to origin, or purge/bypass the cached 301 were not available this iteration. GitHub lock-file updates do not change jasonharper.com.
 
 ## Redirects
 
 ### www → apex
 
-`GET https://www.jasonharper.com` and `GET https://www.jasonharper.com/` both return **HTTP 301**. Observed public `Location` header: `http://jasonharper.com/` (status **301**, target **http://jasonharper.com/**). Same on Sucuri cache HIT and cache-buster MISS.
+`GET https://www.jasonharper.com` and `GET https://www.jasonharper.com/` both return **HTTP 301**. Observed public `Location` header at 2026-08-27T04:43:09Z: `http://jasonharper.com/` (status **301**, target **http://jasonharper.com/**). Same on Sucuri cache HIT (and previously cache-buster MISS).
 
-WordPress (`X-Redirect-By: WordPress`) is issuing that redirect. The Location scheme is `http`, not `https`. A follow-up GET of `http://jasonharper.com/` then 301s to `https://jasonharper.com/`. Origin HTTPS (bypassing Sucuri) already returns Location `https://jasonharper.com/`. Hosting credentials to make the public Location header https were not available this iteration.
+WordPress (`X-Redirect-By: WordPress`) is issuing that redirect. The Location scheme is `http`, not `https`. A follow-up GET of `http://jasonharper.com/` then 301s to `https://jasonharper.com/`. Origin HTTPS (bypassing Sucuri) already returns Location `https://jasonharper.com/`. The public http Location is the same `is_ssl() == false` behind-Sucuri issue as the sitemap loop. Hosting credentials to make the public Location header https were not available this iteration. GitHub lock-file updates do not change jasonharper.com.
 
 Related host redirects:
 
