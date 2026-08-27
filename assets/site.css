@@ -300,6 +300,18 @@ h1 {
   word-break: break-word;
 }
 
+.fitness-note {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.fitness-note a {
+  color: var(--muted);
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 1.5rem 0 2.5rem;
