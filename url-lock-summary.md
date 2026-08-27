@@ -1,8 +1,10 @@
 # jasonharper.com URL lock
 
-Regression baseline of every public-facing URL on the live WordPress site at https://jasonharper.com, crawled 2026-08-27.
+Regression baseline of every public-facing URL on the live WordPress site at https://jasonharper.com, crawled 2026-08-27 (recrawled 2026-08-27T01:30:00Z).
 
 Sources: WordPress REST API (`/wp-json/wp/v2/posts|pages|categories|tags`), live HTTP GET of every collected URL (no redirect following), homepage HTML, and `robots.txt`. Permalink structure on the live site is `/{slug}/` (not `/YYYY/MM/DD/{slug}/`). Date-style samples such as `/2018/04/17/its-still-hard/` return HTTP 404 and are not in this lock.
+
+Inventory files live at the root of public GitHub repo `southu/jasonharper` on default branch `main` (`https://raw.githubusercontent.com/southu/jasonharper/main/url-lock.json` and `url-lock-summary.md`).
 
 ## Counts
 
@@ -29,17 +31,18 @@ Machine-readable inventory: `url-lock.json`.
 ## Sitemap
 
 - Declared URL: `https://jasonharper.com/wp-sitemap.xml` (from `robots.txt`: `Sitemap: https://jasonharper.com/wp-sitemap.xml`)
-- Observed: HTTP 301, `X-Redirect-By: WordPress`, Location `https://jasonharper.com/wp-sitemap.xml` (same URL) — a redirect loop
-- Child sitemaps (`wp-sitemap-posts-post-1.xml`, `wp-sitemap-posts-page-1.xml`, `wp-sitemap-taxonomies-category-1.xml`, `wp-sitemap-taxonomies-post_tag-1.xml`) loop the same way
-- Recorded in `url-lock.json` as the declared sitemap URL. The XML body is not retrievable without following the loop.
+- Public hostname (Sucuri CloudProxy): HTTP 301, `X-Redirect-By: WordPress`, Location `https://jasonharper.com/wp-sitemap.xml` (same URL) — a redirect loop. Confirmed on cache HIT and on cache-buster MISS. Body empty; following redirects never yields XML.
+- Origin HTTPS (HostGator, bypassing Sucuri): HTTP 200, `Content-Type: application/xml`, body is a WordPress `<sitemapindex>` with post/page/category/tag/user children.
+- Child sitemaps (`wp-sitemap-posts-post-1.xml`, `wp-sitemap-posts-page-1.xml`, `wp-sitemap-taxonomies-category-1.xml`, `wp-sitemap-taxonomies-post_tag-1.xml`) loop the same way on the public hostname and return 200 XML on origin HTTPS.
+- Recorded in `url-lock.json` as the declared public sitemap URL. The XML body is not retrievable from the public hostname without following the loop. Hosting credentials to force WordPress `is_ssl()` behind Sucuri (so the public URL returns 200) were not available this iteration.
 
 ## Redirects
 
 ### www → apex
 
-`GET https://www.jasonharper.com` and `GET https://www.jasonharper.com/` both return **HTTP 301**. Observed `Location` header: `http://jasonharper.com/`.
+`GET https://www.jasonharper.com` and `GET https://www.jasonharper.com/` both return **HTTP 301**. Observed public `Location` header: `http://jasonharper.com/` (status **301**, target **http://jasonharper.com/**). Same on Sucuri cache HIT and cache-buster MISS.
 
-WordPress (`X-Redirect-By: WordPress`) is issuing that redirect. The Location scheme is `http`, not `https`. A follow-up GET of `http://jasonharper.com/` then 301s to `https://jasonharper.com/`.
+WordPress (`X-Redirect-By: WordPress`) is issuing that redirect. The Location scheme is `http`, not `https`. A follow-up GET of `http://jasonharper.com/` then 301s to `https://jasonharper.com/`. Origin HTTPS (bypassing Sucuri) already returns Location `https://jasonharper.com/`. Hosting credentials to make the public Location header https were not available this iteration.
 
 Related host redirects:
 
@@ -74,5 +77,5 @@ Homepage: both `https://jasonharper.com` and `https://jasonharper.com/` return H
 - Lock every post at its current `https://jasonharper.com/{slug}/` path. Do not assume `/YYYY/MM/DD/{slug}/` aliases exist; sampled date paths 404.
 - Preserve trailing slashes on posts, pages, categories, tags, and `/feed/`.
 - Preserve `/category/{slug}/` and `/tag/{slug}/` including unused tag `crossfit-2` (count 0, still HTTP 200).
-- www→apex must keep HTTP 301. Today Location is `http://jasonharper.com/`; a cutover that emits `https://jasonharper.com/` would be a behaviour change.
-- `/wp-sitemap.xml` currently does not serve XML. Fixing the loop is WordPress/host configuration, not part of this lock.
+- www→apex must keep HTTP 301. Today the public Location is `http://jasonharper.com/`; a cutover that emits `https://jasonharper.com/` would be a behaviour change (and is what origin HTTPS already emits).
+- `/wp-sitemap.xml` currently does not serve XML on the public hostname (301 self-loop). Origin HTTPS already serves `<sitemapindex>`. Fixing the public loop is WordPress/host configuration (HTTPS-behind-proxy / Sucuri origin protocol), not a change to these lock files.
