@@ -1,0 +1,22 @@
+# Ratchet / local
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.venv/
+dist/
+build/
+.next/
+.coverage
+*.log
+export/
+uploads.zip
+*.wordpress.xml
+runs/
+babysit-*.json
+missions/*.yaml
+project.json
+queue/
